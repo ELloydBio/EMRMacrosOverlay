@@ -1,17 +1,49 @@
 import tkinter as tk
+from tkinter import *
 from tkinter import simpledialog
+from tkinter import ttk
+###GUI Imports
 import keyboard
 import pyperclip
 from datetime import datetime
+import configparser 
+###Functional Imports
+
+
+def settingsGUI():
+    print("Debug: Settings GUI opening")
+    root = tk.Tk()
+    root.title("Settings")
+    root.geometry("600x400")
+
+    label = ttk.Label(root, text="Enter provider name.")
+    label.pack(pady=20)
+    provider_entry = ttk.Entry(root)
+    provider_entry.pack(pady=10)
+    provider_entry.insert(0, provider)  # Pre-fill with current provider
+    def save_provider():
+        global provider
+        provider = provider_entry.get()
+        print("Provider updated to: " + provider)
+        simpledialog.messagebox.showinfo("Info", "Provider updated successfully.")
+        root.destroy()
+
+    save_button = ttk.Button(root, text="Save", command=save_provider)
+    save_button.pack(pady=10)  
+    button = ttk.Button(root, text="Close", command=root.destroy)
+    button.pack(pady=10)
+
+    root.mainloop()
+
+
+
 
 def prompt_for_text():
     root = tk.Tk()
     root.withdraw()  # Hide the main window
     user_input = simpledialog.askstring("Input", "Enter macro")
-    if user_input == "":
-        print("No input provided.")
-        simpledialog.messagebox.showinfo("Info", "Please enter text.")
-        prompt_for_text()
+    if user_input == None:
+        return
     else:
         print(f"You entered: {user_input}")
         copy_to_clipboard(user_input)
@@ -20,7 +52,11 @@ def prompt_for_text():
 #Creates a simple dialog to prompt the user for text input
 
 def copy_to_clipboard(user_input):
-    filename = "Macros\\" + user_input.lower() + ".txt" ### appends file extension and folder
+    try:
+        filename = "Macros\\" + user_input.lower() + ".txt" ### appends file extension and folder
+    except:
+        print("Error: Invalid macro name.")
+        filename = None
     print("Debug: file path - " + filename)
     try:
         file = open(filename, 'r')
@@ -37,7 +73,7 @@ def copy_to_clipboard(user_input):
 
 def autofill(content):
     """Replaces placeholders in the content."""
-    content = content.replace("[date]", datetime.now().strftime("%m-%d-%Y"))
+    content = content.replace("[date]", datetime.now().strftime("%m/%d/%Y"))
     content = content.replace("[time]", datetime.now().strftime("%I:%M %p"))
     content = content.replace("[provider]", provider)
     return content
@@ -51,7 +87,9 @@ def defineprovider():
 if __name__ == "__main__":
 
     shortcut = 'ctrl+alt+c'  # Define the keyboard shortcut
+    settings =  'ctrl+alt+s'  # Define the settings shortcut
     provider = defineprovider()  # Prompt for provider
     keyboard.add_hotkey(shortcut,prompt_for_text)
+    keyboard.add_hotkey(settings, settingsGUI)
     keyboard.wait()
 
