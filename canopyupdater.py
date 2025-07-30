@@ -18,7 +18,7 @@ KNOWN TEST PT CODES
 '''
 #### CONFIG
 driver = webdriver.Chrome()
-username = "carlton.lloyd"
+username = "place.holder"
 ##password = "lorum_ipsum"      #This is here partially as a joke, but partially as a placeholder if I ever bother to store an encrypted password
 table_class = "v-table__wrapper"
 #"//*[@id='inspire']/div/div/main/div/div[3]/div/div[2]/div/div[1]/div[1]/div[2]/div[2]/div[2]/div[3]/div[1]/table/tbody/tr"
