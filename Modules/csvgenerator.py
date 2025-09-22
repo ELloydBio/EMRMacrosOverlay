@@ -1,8 +1,7 @@
-import tkinter.simpledialog
-import pandas as pd
-import re
-import tkinter
-import pyperclip
+if not __name__ == "__main__":
+    from Modules.dependencies import *
+else:
+    from dependencies import *
 
 def parse_appointment_data(data_string):
     """
@@ -75,8 +74,8 @@ def parse_appointment_data(data_string):
                 'Name': final_name,
                 'ID': patient_id
             })
-    plain_text_list = "\n - [ ] ".join([f"{appt['Time']} - {appt['Name']} (ID: {appt['ID']})" for appt in appointments])
-    plain_text_list = " - [ ] " + plain_text_list
+    plain_text_list = "\n- [ ] ".join([f"{appt['Time']} - {appt['Name']} (ID: {appt['ID']})" for appt in appointments])
+    plain_text_list = "- [ ] " + plain_text_list
     pyperclip.copy(plain_text_list)
     print("Debug: Parsed appointment data:\n" + plain_text_list)
     return appointments
@@ -104,5 +103,5 @@ def convert_to_spreadsheet(data_string, output_filename="appointments.csv"):
 
 # --- Example Usage ---
 if __name__ == "__main__":
-    raw_data = tkinter.simpledialog.askstring("Input", "Please enter the appointment data:")
+    raw_data = simpledialog.askstring("Input", "Please enter the appointment data:")
     convert_to_spreadsheet(raw_data)

@@ -1,24 +1,24 @@
-from time import sleep
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-import keyboard
-import pyperclip
-import pyautogui as pya
-from tkinter import simpledialog
-import numpy
-import pandas
+if not __name__ == "__main__":
+    from Modules.dependencies import *
+else:
+    from dependencies import *
 
 #### NOTES
+
 '''
+TO DO:
+    GET PT INFO:
+        DEMOGRAPHICS
+        LABS
+        VITALS
+        OTHER?
+
 KNOWN TEST PT CODES 
 551435
 850977
 '''
 #### CONFIG
-driver = webdriver.Chrome()
-username = "place.holder"
+username = "carlton.lloyd"
 ##password = "lorum_ipsum"      #This is here partially as a joke, but partially as a placeholder if I ever bother to store an encrypted password
 table_class = "v-table__wrapper"
 #"//*[@id='inspire']/div/div/main/div/div[3]/div/div[2]/div/div[1]/div[1]/div[2]/div[2]/div[2]/div[3]/div[1]/table/tbody/tr"
@@ -29,6 +29,16 @@ table_class = "v-table__wrapper"
 #### Functions
 
 #Consider adding a function call MRNs from appointments.csv
+
+def web_init():
+    global driver
+    driver = webdriver.Chrome()
+
+def web_init_headless():
+    global driver
+    options = webdriver.ChromeOptions()
+    options.add_argument("--headless")
+    driver = webdriver.Chrome(options=options)
 
 def focus():
         # Force focus to the active Selenium window
@@ -75,18 +85,18 @@ def createurl(input_list):
 
     url_list = []
     for input in input_list:
-        url = "https://canopy2.oakstreethealth.com/#/charts/" + str(input) + "/documents"
+        url = "https://onecanopy.oakstreethealth.com/#/charts/" + str(input) + "/documents"
         url_list.append(url)
         print("Debug: URL created - " + url)
     return url_list
 
 
 def login(password_input): 
-
+    web_init()
     #Initialize Canopy to log in. Required each time the script is run
     #KNOWN ISSUE: no password error handling
     #TO DO: add error for no password and wrong password
-    driver.get("https://canopy2.oakstreethealth.com/#/tracker")  # Opens canopy tracker page
+    driver.get("https://onecanopy.oakstreethealth.com/#/tracker")  # Opens canopy tracker page
 
     try:
         # Wait for the username field to be present and visible
@@ -174,7 +184,7 @@ def find_last_note():
                     table_r1_XPATH + "[" +str(r)+ "]/td["+str(p)+"]").text
                 if p == 1:
                     try:  # Attempts to convert a date into a numpy datetime64 object
-                        dt_object_pandas = pandas.to_datetime(value)
+                        dt_object_pandas = pd.to_datetime(value)
                         dt_object_numpy = dt_object_pandas.to_numpy()
                         line.append(dt_object_numpy)
                     except Exception:
@@ -214,7 +224,6 @@ def find_last_note():
         print(f"Failed to find or click on the last note: {e}")
         raise Exception("Failed to find or click on the last note.")
 
-
 def get_pdf_text():
     """Extracts text from the PDF document."""
     try:
@@ -247,37 +256,54 @@ def get_pdf_text():
 
 
 
+
+
+
+
+# MORNING INITIALIZATION MODULE
+
 def get_schedule(provider):
-    TO = 100 # int timeout in seconds, higher for debugging lower for production
-    #Gets raw schedule data from the main canopy tracker page
-    schedule_data = ""
     try:
-        driver.get("https://onecanopy.oakstreethealth.com/#/tracker")
-        WebDriverWait(driver, TO).until(
-            EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/div/div/div/main/div/div/div[2]/header/div/button[1]"))
-        )
-        button = driver.find_element(By.XPATH, "/html/body/div[1]/div/div/div/main/div/div/div[2]/header/div/button[1]")
-        button.click()
+        TO = 10  # int timeout in seconds, higher for debugging lower for production
+        # Gets raw schedule data from the main canopy tracker page
+        schedule_data = ""
+        try:
+            driver.get("https://onecanopy.oakstreethealth.com/#/tracker")
+            WebDriverWait(driver, TO).until(
+                EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/div/div/div/main/div/div/div[2]/header/div/button[1]"))
+            )
+            button = driver.find_element(By.XPATH, "/html/body/div[1]/div/div/div/main/div/div/div[2]/header/div/button[1]")
+            button.click()
 
-        WebDriverWait(driver, TO).until(
-            EC.presence_of_element_located((By.ID, "provider-filter-autocomplete"))
-        )
-        provider_field = driver.find_element(By.ID, "provider-filter-autocomplete")
-        provider_field.send_keys(provider)  # Set the provider field
-        sleep(3)  # Wait for the input to be processed
-        #suboptimal, better to wait for provider name to appear in the dropdown
-        keyboard.send(keyboard.KEY_DOWN)
-        keyboard.send('enter')  # Simulate pressing Enter to apply the filter
+            WebDriverWait(driver, TO).until(
+                EC.presence_of_element_located((By.ID, "provider-filter-autocomplete"))
+            )
+            provider_field = driver.find_element(By.ID, "provider-filter-autocomplete")
+            provider_field.send_keys(provider)  # Set the provider field
+            sleep(3)  # Wait for the input to be processed
+            #suboptimal, better to wait for provider name to appear in the dropdown
+            keyboard.send(keyboard.KEY_DOWN)
+            keyboard.send('enter')  # Simulate pressing Enter to apply the filter
 
-        WebDriverWait(driver, TO).until(
-            EC.presence_of_element_located((By.CLASS_NAME, "schedule-view-default-tr"))
-        )
-        schedule_data = driver.find_element(By.TAG_NAME, "body").text
-        print("Data retreived from canopy")
+            WebDriverWait(driver, TO).until(
+                EC.presence_of_element_located((By.CLASS_NAME, "schedule-view-default-tr"))
+            )
+            schedule_data = driver.find_element(By.TAG_NAME, "body").text
+            print("Data retreived from canopy")
+        except Exception as e:
+            print(f"Error getting schedule data: {e}")
+        driver.quit()  # Close the browser after getting the schedule data
+        return schedule_data
     except Exception as e:
         print(f"Error getting schedule data: {e}")
-    driver.quit()  # Close the browser after getting the schedule data
+        return None
+
+def init_module(password, provider):
+    web_init()
+    login(password)
+    schedule_data = get_schedule(provider)
     return schedule_data
+
 
 
 
@@ -303,7 +329,8 @@ def main(pwd):
                 continue
 
 if __name__ == "__main__":
-    my_list = numbers_to_list()
+    driver = webdriver.Chrome() 
+    my_list = numbers_to_list() #user input for MRNs, may need to be ammended to read from a file or other source
     url_list = createurl(my_list)
     pwd = simpledialog.askstring("Input", "Enter Password:", show='*')  #Calls for userinput for password prior to log in - required because I'm too lazy/stupid to salt and hash a password corectly
 

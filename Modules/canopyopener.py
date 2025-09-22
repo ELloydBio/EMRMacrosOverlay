@@ -1,4 +1,7 @@
-import webbrowser
+if not __name__ == "__main__":
+    from Modules.dependencies import *
+else:
+    from dependencies import *
 
 def numbers_to_list():
     """
@@ -22,7 +25,7 @@ def numbers_to_list():
 def createurl(input_list): 
     url_list = []
     for input in input_list:
-        url = "https://canopy2.oakstreethealth.com/#/charts/" + str(input)
+        url = "https://onecanopy.oakstreethealth.com/#/charts/" + str(input)
         url_list.append(url)
         print("Debug: URL created - " + url)
     return url_list
