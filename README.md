@@ -27,7 +27,7 @@ Add config file support
 
 Enable custom square bracket fields for data replacement
 
-Add graphical config/settings
+Add additional graphical config/settings functionality
 
 Tentatively: add web crawler to retrieve pt info from EMRs
 
