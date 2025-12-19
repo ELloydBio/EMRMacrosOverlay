@@ -1,9 +1,3 @@
-#TO DO
-# Implement error handling for login failures (May fall under canopy updater module)
-#### Including ways to validate the password, possibly by storing a salt+hash?
-#Flesh out the main GUI
-#### Improve layout and user experience
-
 #Custom modules
 import Modules.csvgenerator as csvgenerator
 from Modules.canopyupdater import login, get_schedule, init_module
@@ -250,7 +244,7 @@ if __name__ == "__main__":
         ('ctrl+alt+e', create_csv),
         ('ctrl+alt+u', clipboard_to_caps)
     ]
-    Default_Provider = "Gregory House, MD"  # Default provider name
+    Default_Provider = "Catherine Dodds, MD"  # Default provider name
 
 
     #BODY
@@ -266,5 +260,4 @@ if __name__ == "__main__":
         while True:
             keyboard.wait()
     except KeyboardInterrupt:
-
         print("Keyboard interrupt received. Exiting...")
