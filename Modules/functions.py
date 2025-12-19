@@ -50,3 +50,23 @@ def sync(fn_list):
     except Exception as e:
         exception_handler(e)
 
+def numbers_to_list():
+    try:
+        """
+        Takes a string of numbers separated by newlines and converts it into a list of integers.
+        """
+        print("Enter numbers, one per line. Press Enter on an empty line to finish.")
+        
+        numbers_str = ""
+        while True:
+            line = (simpledialog.askstring("Input", "Enter a number (or leave blank to finish):"))
+            if not line:  # Check if the line is empty
+                break
+            numbers_str += line + "\n"  # Append the line and a newline character
+
+        # Split the string by newline characters, filter out empty strings, and convert to integers
+        numbers_list = [int(num) for num in numbers_str.strip().split('\n') if num.strip()]
+        
+        return numbers_list
+    except Exception as e:
+        raise ValueError(f"Invalid input: {e}. Please enter valid numbers separated by newlines.")

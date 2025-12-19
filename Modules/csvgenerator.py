@@ -103,5 +103,6 @@ def convert_to_spreadsheet(data_string, output_filename="appointments.csv"):
 
 # --- Example Usage ---
 if __name__ == "__main__":
-    raw_data = simpledialog.askstring("Input", "Please enter the appointment data:")
+    #raw_data = simpledialog.askstring("Input", "Please enter the appointment data:")
+    raw_data = pyperclip.paste()
     convert_to_spreadsheet(raw_data)

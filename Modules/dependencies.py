@@ -15,4 +15,6 @@ import threading
 import numpy
 import webbrowser
 import os
-
+import argparse
+import sys
+import pypdfium2

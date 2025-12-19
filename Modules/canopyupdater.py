@@ -18,7 +18,7 @@ KNOWN TEST PT CODES
 850977
 '''
 #### CONFIG
-username = "carlton.lloyd"
+username = "first.last"
 ##password = "lorum_ipsum"      #This is here partially as a joke, but partially as a placeholder if I ever bother to store an encrypted password
 table_class = "v-table__wrapper"
 #"//*[@id='inspire']/div/div/main/div/div[3]/div/div[2]/div/div[1]/div[1]/div[2]/div[2]/div[2]/div[3]/div[1]/table/tbody/tr"
@@ -33,6 +33,7 @@ table_class = "v-table__wrapper"
 def web_init():
     global driver
     driver = webdriver.Chrome()
+    return driver
 
 def web_init_headless():
     global driver
@@ -92,7 +93,6 @@ def createurl(input_list):
 
 
 def login(password_input): 
-    web_init()
     #Initialize Canopy to log in. Required each time the script is run
     #KNOWN ISSUE: no password error handling
     #TO DO: add error for no password and wrong password
@@ -303,6 +303,13 @@ def init_module(password, provider):
     login(password)
     schedule_data = get_schedule(provider)
     return schedule_data
+
+
+
+
+
+
+
 
 
 

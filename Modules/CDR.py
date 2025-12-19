@@ -25,14 +25,21 @@ def numbers_to_list():
 def createurl(input_list): 
     url_list = []
     for input in input_list:
-        url = "https://onecanopy.oakstreethealth.com/#/charts/" + str(input)
+        url = "https://onecanopy.oakstreethealth.com/#/charts/" + str(input) + "/suspects"
         url_list.append(url)
         print("Debug: URL created - " + url)
     return url_list
 
 if __name__ == "__main__":
-    my_list = numbers_to_list()
-    print("The list of numbers is:", my_list)
-    url_list=createurl(my_list)
-    for url in url_list:
-        webbrowser.open_new_tab(url)
+    try:
+        my_list = numbers_to_list()
+        print("The list of numbers is:", my_list)
+        url_list=createurl(my_list)
+        for url in url_list:
+            webbrowser.open_new_tab(url)
+            print(f"Opened patient chart: {url}")
+            keyboard.wait('ctrl+shift+z')
+    except KeyboardInterrupt:
+        print("Process interrupted by user.")
+    except Exception as e:
+        print("Error occurred:", e)
