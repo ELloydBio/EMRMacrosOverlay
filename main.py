@@ -244,7 +244,7 @@ if __name__ == "__main__":
         ('ctrl+alt+e', create_csv),
         ('ctrl+alt+u', clipboard_to_caps)
     ]
-    Default_Provider = "Catherine Dodds, MD"  # Default provider name
+    Default_Provider = "Gregory House, MD"  # Default provider name
 
 
     #BODY
@@ -260,4 +260,5 @@ if __name__ == "__main__":
         while True:
             keyboard.wait()
     except KeyboardInterrupt:
+
         print("Keyboard interrupt received. Exiting...")
