@@ -1,9 +1,3 @@
-#TO DO
-# Implement error handling for login failures (May fall under canopy updater module)
-#### Including ways to validate the password, possibly by storing a salt+hash?
-#Flesh out the main GUI
-#### Improve layout and user experience
-
 #Custom modules
 import Modules.csvgenerator as csvgenerator
 from Modules.canopyupdater import login, get_schedule, init_module
