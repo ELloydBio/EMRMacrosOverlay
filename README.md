@@ -1,6 +1,9 @@
 # EMRMacrosOverlay
 Adds rudimentary macro function by copying text to clipboard based on a shortcut name. Inspired by EMR dot macros functionality, intended for use in EMRs that lack this basic feature.
 
+# Important Notice
+This tool is considered depracated as Canopy is being phased out in favor of Epic Software. Currently I am using [Beeftext](https://github.com/xmichelo/Beeftext/) as it covers most of my needs for text expansion at this time. I am currently using a script based off this code to do chart reviews and concisely generate quick laboratory text lines for easy charting. See: [CanopyTestSuite](https://github.com/ELloydBio/CanopyTestSuite)
+
 ## Tutorial
 Create basic macros by placing the text to add in a .txt file
 
